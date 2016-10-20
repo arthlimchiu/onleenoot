@@ -1,5 +1,7 @@
 package com.example.onleeenoot.notes;
 
+import com.example.onleeenoot.data.Note;
+
 import java.util.List;
 
 public interface NotesContract {
