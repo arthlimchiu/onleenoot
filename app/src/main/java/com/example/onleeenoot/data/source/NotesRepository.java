@@ -2,10 +2,6 @@ package com.example.onleeenoot.data.source;
 
 import com.example.onleeenoot.data.Note;
 
-/**
- * Created by Clarence on 10/20/2016.
- */
-
 public class NotesRepository implements NotesDataSource {
     private static NotesRepository INSTANCE = null;
 

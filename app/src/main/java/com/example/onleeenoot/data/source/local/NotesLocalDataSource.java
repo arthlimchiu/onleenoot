@@ -3,10 +3,6 @@ package com.example.onleeenoot.data.source.local;
 import com.example.onleeenoot.data.Note;
 import com.example.onleeenoot.data.source.NotesDataSource;
 
-/**
- * Created by Clarence on 10/20/2016.
- */
-
 public class NotesLocalDataSource implements NotesDataSource {
 
     @Override

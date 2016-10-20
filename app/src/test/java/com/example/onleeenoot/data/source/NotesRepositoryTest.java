@@ -11,9 +11,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.verify;
 
-/**
- * Created by Clarence on 10/20/2016.
- */
 @RunWith(MockitoJUnitRunner.class)
 public class NotesRepositoryTest {
     private NotesRepository mNotesRepository;
