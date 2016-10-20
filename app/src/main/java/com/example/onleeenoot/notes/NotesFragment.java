@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.onleeenoot.R;
 import com.example.onleeenoot.addnote.AddNoteActivity;
+import com.example.onleeenoot.data.Note;
 
 import java.util.List;
 

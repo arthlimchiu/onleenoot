@@ -1,6 +1,6 @@
 package com.example.onleeenoot.util;
 
-import com.example.onleeenoot.notes.Note;
+import com.example.onleeenoot.data.Note;
 
 import java.util.ArrayList;
 import java.util.List;
