@@ -2,6 +2,8 @@ package com.example.onleeenoot.data.source;
 
 import com.example.onleeenoot.data.Note;
 
+import java.util.List;
+
 public class NotesRepository implements NotesDataSource {
     private static NotesRepository INSTANCE = null;
 
@@ -23,13 +25,33 @@ public class NotesRepository implements NotesDataSource {
     }
 
     @Override
-    public void getNotes() {
-        mNotesLocalDataSource.getNotes();
+    public void getNotes(LoadNotesCallback callback) {
+        mNotesLocalDataSource.getNotes(new LoadNotesCallback() {
+            @Override
+            public void onNotesLoaded(List<Note> notes) {
+
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
     }
 
     @Override
-    public void getNote(String id) {
-        mNotesLocalDataSource.getNote(id);
+    public void getNote(String id, GetNoteCallback callback) {
+        mNotesLocalDataSource.getNote(id, new GetNoteCallback() {
+            @Override
+            public void onNoteLoaded(Note note) {
+
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
     }
 
     @Override
@@ -45,5 +67,10 @@ public class NotesRepository implements NotesDataSource {
     @Override
     public void deleteNote(String id) {
         mNotesLocalDataSource.deleteNote(id);
+    }
+
+    @Override
+    public void deleteNotes() {
+        mNotesLocalDataSource.deleteNotes();
     }
 }

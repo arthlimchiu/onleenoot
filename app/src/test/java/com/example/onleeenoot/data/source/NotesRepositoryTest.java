@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -17,6 +19,12 @@ public class NotesRepositoryTest {
 
     @Mock
     private NotesDataSource mNotesLocalDataSource;
+
+    @Mock
+    private NotesDataSource.LoadNotesCallback mLoadNotesCallback;
+
+    @Mock
+    private NotesDataSource.GetNoteCallback mGetNoteCallback;
 
     @Before
     public void setUp() throws Exception {
@@ -30,16 +38,16 @@ public class NotesRepositoryTest {
 
     @Test
     public void getNotesFromLocalDataSource() throws Exception {
-        mNotesRepository.getNotes();
-        verify(mNotesLocalDataSource).getNotes();
+        mNotesRepository.getNotes(mLoadNotesCallback);
+        verify(mNotesLocalDataSource).getNotes(any(NotesDataSource.LoadNotesCallback.class));
     }
 
     @Test
     public void getNoteFromLocalDataSource() throws Exception {
         String id = "123";
 
-        mNotesRepository.getNote(id);
-        verify(mNotesLocalDataSource).getNote(id);
+        mNotesRepository.getNote(id, mGetNoteCallback);
+        verify(mNotesLocalDataSource).getNote(eq(id), any(NotesDataSource.GetNoteCallback.class));
     }
 
     @Test
@@ -64,5 +72,11 @@ public class NotesRepositoryTest {
 
         mNotesRepository.deleteNote(id);
         verify(mNotesLocalDataSource).deleteNote(id);
+    }
+
+    @Test
+    public void deleteAllNotesFromLocalDataSource() throws Exception {
+        mNotesRepository.deleteNotes();
+        verify(mNotesLocalDataSource).deleteNotes();
     }
 }
