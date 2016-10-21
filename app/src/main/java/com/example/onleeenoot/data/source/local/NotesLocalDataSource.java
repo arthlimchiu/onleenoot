@@ -98,15 +98,21 @@ public class NotesLocalDataSource implements NotesDataSource {
     }
 
     @Override
-    public void saveNote(Note note) {
+    public void saveNote(Note note, SaveNoteCallback callback) {
         SQLiteDatabase db = mDBHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(NotesTable.COLUMN_TEXT, note.getText());
 
-        db.insert(NotesTable.TABLE_NAME, null, values);
+        long id = db.insert(NotesTable.TABLE_NAME, null, values);
 
         db.close();
+
+        if (id == -1) {
+            callback.onError();
+        } else {
+            callback.onNoteSaved(id);
+        }
     }
 
     @Override

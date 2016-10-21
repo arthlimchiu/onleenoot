@@ -9,8 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,6 +25,9 @@ public class NotesRepositoryTest {
 
     @Mock
     private NotesDataSource.GetNoteCallback mGetNoteCallback;
+
+    @Mock
+    private NotesDataSource.SaveNoteCallback mSaveNoteCallback;
 
     @Before
     public void setUp() throws Exception {
@@ -54,8 +57,8 @@ public class NotesRepositoryTest {
     public void saveNoteToLocalDataSource() throws Exception {
         Note note = new Note("Sample Text");
 
-        mNotesRepository.saveNote(note);
-        verify(mNotesLocalDataSource).saveNote(note);
+        mNotesRepository.saveNote(note, mSaveNoteCallback);
+        verify(mNotesLocalDataSource).saveNote(eq(note), any(NotesDataSource.SaveNoteCallback.class));
     }
 
     @Test

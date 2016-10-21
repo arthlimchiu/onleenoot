@@ -22,12 +22,17 @@ public interface NotesDataSource {
         void onDataNotAvailable();
     }
 
+    interface SaveNoteCallback {
+        void onNoteSaved(long id);
+
+        void onError();
+    }
 
     void getNotes(LoadNotesCallback callback);
 
     void getNote(String id, GetNoteCallback callback);
 
-    void saveNote(Note note);
+    void saveNote(Note note, SaveNoteCallback callback);
 
     void updateNote(Note note);
 

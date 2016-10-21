@@ -11,7 +11,7 @@ public class NotesTable {
     private static final String DATABASE_CREATE = "create table "
             + TABLE_NAME
             + "("
-            + COLUMN_ID + " integer primary key autoincrement"
+            + COLUMN_ID + " integer primary key autoincrement,"
             + COLUMN_TEXT + " text"
             + ")";
 
