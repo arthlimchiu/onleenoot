@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -17,6 +19,15 @@ public class NotesRepositoryTest {
 
     @Mock
     private NotesDataSource mNotesLocalDataSource;
+
+    @Mock
+    private NotesDataSource.LoadNotesCallback mLoadNotesCallback;
+
+    @Mock
+    private NotesDataSource.GetNoteCallback mGetNoteCallback;
+
+    @Mock
+    private NotesDataSource.SaveNoteCallback mSaveNoteCallback;
 
     @Before
     public void setUp() throws Exception {
@@ -30,24 +41,24 @@ public class NotesRepositoryTest {
 
     @Test
     public void getNotesFromLocalDataSource() throws Exception {
-        mNotesRepository.getNotes();
-        verify(mNotesLocalDataSource).getNotes();
+        mNotesRepository.getNotes(mLoadNotesCallback);
+        verify(mNotesLocalDataSource).getNotes(any(NotesDataSource.LoadNotesCallback.class));
     }
 
     @Test
     public void getNoteFromLocalDataSource() throws Exception {
         String id = "123";
 
-        mNotesRepository.getNote(id);
-        verify(mNotesLocalDataSource).getNote(id);
+        mNotesRepository.getNote(id, mGetNoteCallback);
+        verify(mNotesLocalDataSource).getNote(eq(id), any(NotesDataSource.GetNoteCallback.class));
     }
 
     @Test
     public void saveNoteToLocalDataSource() throws Exception {
         Note note = new Note("Sample Text");
 
-        mNotesRepository.saveNote(note);
-        verify(mNotesLocalDataSource).saveNote(note);
+        mNotesRepository.saveNote(note, mSaveNoteCallback);
+        verify(mNotesLocalDataSource).saveNote(eq(note), any(NotesDataSource.SaveNoteCallback.class));
     }
 
     @Test
@@ -64,5 +75,11 @@ public class NotesRepositoryTest {
 
         mNotesRepository.deleteNote(id);
         verify(mNotesLocalDataSource).deleteNote(id);
+    }
+
+    @Test
+    public void deleteAllNotesFromLocalDataSource() throws Exception {
+        mNotesRepository.deleteNotes();
+        verify(mNotesLocalDataSource).deleteNotes();
     }
 }
