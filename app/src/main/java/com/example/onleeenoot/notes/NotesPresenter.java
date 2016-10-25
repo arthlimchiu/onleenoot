@@ -1,16 +1,20 @@
 package com.example.onleeenoot.notes;
 
 import com.example.onleeenoot.Cheese;
+import com.example.onleeenoot.data.Note;
+import com.example.onleeenoot.data.source.NotesDataSource;
 import com.example.onleeenoot.util.ListUtil;
+
+import java.util.List;
 
 public class NotesPresenter implements NotesContract.Presenter {
 
     private NotesContract.View mView;
-    private NotesService mService;
+    private NotesDataSource mRepository;
 
-    public NotesPresenter(NotesContract.View view, NotesService service) {
+    public NotesPresenter(NotesContract.View view, NotesDataSource repository) {
         mView = view;
-        mService = service;
+        mRepository = repository;
         mView.setPresenter(this);
     }
 
@@ -22,13 +26,18 @@ public class NotesPresenter implements NotesContract.Presenter {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.sleep(5000);
-                    mView.showNotes(ListUtil.toList(Cheese.LIST));
-                    mView.showLoadingIndicator(false);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                mRepository.getNotes(new NotesDataSource.LoadNotesCallback() {
+                    @Override
+                    public void onNotesLoaded(List<Note> notes) {
+                        mView.showNotes(notes);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+
+                    }
+                });
+                mView.showLoadingIndicator(false);
             }
         }).start();
     }

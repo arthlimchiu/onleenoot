@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.onleeenoot.R;
+import com.example.onleeenoot.data.source.NotesRepository;
+import com.example.onleeenoot.data.source.local.NotesLocalDataSource;
 
 public class NotesActivity extends AppCompatActivity {
 
@@ -21,7 +23,7 @@ public class NotesActivity extends AppCompatActivity {
                     .commit();
         }
 
-        new NotesPresenter(notesFragment, new NotesService());
+        new NotesPresenter(notesFragment, NotesRepository.getInstance(NotesLocalDataSource.getInstance(this)));
     }
 
 }
