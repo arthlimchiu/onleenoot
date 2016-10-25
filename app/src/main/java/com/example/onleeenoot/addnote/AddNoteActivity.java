@@ -2,6 +2,9 @@ package com.example.onleeenoot.addnote;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.onleeenoot.R;
@@ -11,6 +14,8 @@ import com.example.onleeenoot.data.source.local.NotesLocalDataSource;
 public class AddNoteActivity extends AppCompatActivity implements AddNoteContract.View {
 
     private AddNotePresenter presenter;
+    private EditText mNote;
+    private Button mSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,11 +23,19 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteContrac
         setContentView(R.layout.activity_add_note);
 
         presenter = new AddNotePresenter(this, NotesRepository.getInstance(NotesLocalDataSource.getInstance(this)));
+
+        mNote = (EditText) findViewById(R.id.note);
+        mSave = (Button) findViewById(R.id.save);
+        mSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.saveNote(mNote.getText().toString());
+            }
+        });
     }
 
     @Override
     public void startNotesActivity() {
-        setResult(RESULT_OK);
         finish();
     }
 

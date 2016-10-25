@@ -10,4 +10,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.onleeenoot.addnote.AddNoteActivity">
 
+    <Button
+        android:text="Save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/save"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/note"
+        android:hint="Write your note here..."
+        android:layout_height="200dp"
+        android:textAlignment="viewStart"
+        android:gravity="top"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 </RelativeLayout>
