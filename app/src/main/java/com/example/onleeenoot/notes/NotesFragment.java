@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.onleeenoot.R;
 import com.example.onleeenoot.addnote.AddNoteActivity;
 import com.example.onleeenoot.data.Note;
+import com.example.onleeenoot.details.NoteDetailsActivity;
 
 import java.util.List;
 
@@ -89,7 +90,7 @@ public class NotesFragment extends Fragment implements NotesContract.View {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                mAdapter = new NotesAdapter(notes);
+                mAdapter = new NotesAdapter(notes, mListener);
                 mRecycler.setAdapter(mAdapter);
             }
         });
@@ -101,15 +102,31 @@ public class NotesFragment extends Fragment implements NotesContract.View {
         startActivity(intent);
     }
 
+    @Override
+    public void startNoteDetailsActivity(String id) {
+        Intent intent = new Intent(getContext(), NoteDetailsActivity.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
+    }
+
+    NoteItemClickListener mListener = new NoteItemClickListener() {
+        @Override
+        public void onNoteClick(Note note) {
+            mPresenter.openNoteDetails(note);
+        }
+    };
+
     class NotesAdapter extends RecyclerView.Adapter<NotesViewHolder> {
 
         private List<Note> notes;
+        private NoteItemClickListener mListener;
 
-        NotesAdapter(List<Note> notes) {
+        NotesAdapter(List<Note> notes, NoteItemClickListener listener) {
             this.notes = notes;
+            mListener = listener;
         }
 
-        @Override
+            @Override
         public NotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View rootView = LayoutInflater.from(getContext()).inflate(
                     android.R.layout.simple_list_item_1, parent, false);
@@ -117,8 +134,14 @@ public class NotesFragment extends Fragment implements NotesContract.View {
         }
 
         @Override
-        public void onBindViewHolder(NotesViewHolder holder, int position) {
+        public void onBindViewHolder(NotesViewHolder holder, final int position) {
             holder.setTitle(notes.get(position).getText());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onNoteClick(notes.get(position));
+                }
+            });
         }
 
         @Override
@@ -139,5 +162,9 @@ public class NotesFragment extends Fragment implements NotesContract.View {
         void setTitle(String text) {
             mText.setText(text);
         }
+    }
+
+    public interface NoteItemClickListener {
+        void onNoteClick(Note note);
     }
 }

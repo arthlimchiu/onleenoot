@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 
@@ -64,5 +65,13 @@ public class NotesUnitTest {
     public void startAddNoteActivityWhenFabIsClicked() throws Exception {
         presenter.addNewNote();
         verify(view).launchAddNewNoteScreen();
+    }
+
+    @Test
+    public void startNoteDetailsActivityWhenANoteIsClicked() throws Exception {
+        Note note = new Note(1, "Sample Text");
+
+        presenter.openNoteDetails(note);
+        verify(view).startNoteDetailsActivity(eq(String.valueOf(note.getId())));
     }
 }

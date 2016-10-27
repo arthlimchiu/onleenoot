@@ -19,6 +19,8 @@ public interface NotesContract {
         void showNotes(List<Note> notes);
 
         void launchAddNewNoteScreen();
+
+        void startNoteDetailsActivity(String id);
     }
 
     /**
@@ -29,5 +31,7 @@ public interface NotesContract {
         void loadNotes();
 
         void addNewNote();
+
+        void openNoteDetails(Note note);
     }
 }

@@ -17,9 +17,6 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 
-/**
- * Created by Clarence on 10/24/2016.
- */
 @RunWith(MockitoJUnitRunner.class)
 public class AddNotePresenterTest {
 

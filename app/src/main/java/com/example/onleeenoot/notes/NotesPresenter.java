@@ -46,4 +46,9 @@ public class NotesPresenter implements NotesContract.Presenter {
     public void addNewNote() {
         mView.launchAddNewNoteScreen();
     }
+
+    @Override
+    public void openNoteDetails(Note note) {
+        mView.startNoteDetailsActivity(String.valueOf(note.getId()));
+    }
 }
