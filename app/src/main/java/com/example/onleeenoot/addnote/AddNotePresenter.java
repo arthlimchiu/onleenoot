@@ -4,10 +4,13 @@ import com.example.onleeenoot.data.Note;
 import com.example.onleeenoot.data.source.NotesDataSource;
 
 public class AddNotePresenter implements AddNoteContract.Presenter {
+    private String mId;
     private AddNoteContract.View mView;
     private NotesDataSource mRepository;
+    private Note mNote;
 
-    public AddNotePresenter(AddNoteContract.View view, NotesDataSource repository) {
+    public AddNotePresenter(String id, AddNoteContract.View view, NotesDataSource repository) {
+        mId = id;
         mView = view;
         mRepository = repository;
     }
@@ -19,8 +22,15 @@ public class AddNotePresenter implements AddNoteContract.Presenter {
             return;
         }
 
-        Note note = new Note(text);
-        mRepository.saveNote(note, new NotesDataSource.SaveNoteCallback() {
+        if (mId != null) {
+            mNote.setText(text);
+            mRepository.updateNote(mNote);
+            mView.startNotesActivity();
+            return;
+        }
+
+        mNote = new Note(text);
+        mRepository.saveNote(mNote, new NotesDataSource.SaveNoteCallback() {
             @Override
             public void onNoteSaved(long id) {
                 mView.startNotesActivity();
@@ -29,6 +39,22 @@ public class AddNotePresenter implements AddNoteContract.Presenter {
             @Override
             public void onError() {
                 mView.showFailedToSaveError();
+            }
+        });
+    }
+
+    @Override
+    public void populateNote() {
+        mRepository.getNote(mId, new NotesDataSource.GetNoteCallback() {
+            @Override
+            public void onNoteLoaded(Note note) {
+                mView.showText(note.getText());
+                mNote = note;
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
             }
         });
     }

@@ -15,10 +15,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddNotePresenterTest {
+
+    private String NOTE_ID = "1";
 
     @Mock
     private AddNoteContract.View view;
@@ -29,15 +33,15 @@ public class AddNotePresenterTest {
     @Captor
     private ArgumentCaptor<NotesDataSource.SaveNoteCallback> mSaveNoteCallbackCaptor;
 
-    private AddNotePresenter presenter;
+    @Captor
+    private ArgumentCaptor<NotesDataSource.GetNoteCallback> mGetNoteCallbackCaptor;
 
-    @Before
-    public void setUp() throws Exception {
-        presenter = new AddNotePresenter(view, repository);
-    }
+    private AddNotePresenter presenter;
 
     @Test
     public void saveNoteAndReturnToNotesActivity() throws Exception {
+        presenter = new AddNotePresenter(null, view, repository);
+
         presenter.saveNote("Sample Text");
 
         verify(repository).saveNote(any(Note.class), mSaveNoteCallbackCaptor.capture());
@@ -45,6 +49,23 @@ public class AddNotePresenterTest {
         mSaveNoteCallbackCaptor.getValue().onNoteSaved(1);
 
         verify(view).startNotesActivity();
+    }
+
+    @Test
+    public void updateNote() throws Exception {
+        presenter = new AddNotePresenter(NOTE_ID, view, repository);
+        presenter.populateNote();
+
+        verify(repository).getNote(eq(NOTE_ID), mGetNoteCallbackCaptor.capture());
+
+        mGetNoteCallbackCaptor.getValue().onNoteLoaded(new Note(1, "Sample Text"));
+
+        verify(view).showText(anyString());
+
+        presenter.saveNote("Sample Text");
+
+        verify(repository).updateNote(any(Note.class));
+
     }
 
     @Test

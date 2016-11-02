@@ -30,4 +30,15 @@ public class NoteDetailsPresenter implements NoteDetailsContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void deleteNote() {
+        mRepository.deleteNote(mTaskId);
+        mView.showNoteDeleted();
+    }
+
+    @Override
+    public void editNote() {
+        mView.showEditNote(mTaskId);
+    }
 }

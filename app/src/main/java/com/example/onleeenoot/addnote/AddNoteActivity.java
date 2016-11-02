@@ -16,13 +16,16 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteContrac
     private AddNotePresenter presenter;
     private EditText mNote;
     private Button mSave;
+    private String mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
 
-        presenter = new AddNotePresenter(this, NotesRepository.getInstance(NotesLocalDataSource.getInstance(this)));
+        mId = getIntent().getStringExtra("id");
+
+        presenter = new AddNotePresenter(mId, this, NotesRepository.getInstance(NotesLocalDataSource.getInstance(this)));
 
         mNote = (EditText) findViewById(R.id.note);
         mSave = (Button) findViewById(R.id.save);
@@ -32,6 +35,14 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteContrac
                 presenter.saveNote(mNote.getText().toString());
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mId != null) {
+            presenter.populateNote();
+        }
     }
 
     @Override
@@ -47,5 +58,10 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteContrac
     @Override
     public void showFailedToSaveError() {
         Toast.makeText(AddNoteActivity.this, "Failed to save", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showText(String text) {
+        mNote.setText(text);
     }
 }

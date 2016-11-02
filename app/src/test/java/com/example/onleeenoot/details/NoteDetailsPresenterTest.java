@@ -47,4 +47,18 @@ public class NoteDetailsPresenterTest {
 
         verify(view).showText(note.getText());
     }
+
+    @Test
+    public void deleteNote() throws Exception {
+        presenter.deleteNote();
+
+        verify(repository).deleteNote(String.valueOf(note.getId()));
+        verify(view).showNoteDeleted();
+    }
+
+    @Test
+    public void editNote() throws Exception {
+        presenter.editNote();
+        verify(view).showEditNote(String.valueOf(note.getId()));
+    }
 }

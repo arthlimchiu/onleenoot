@@ -12,10 +12,14 @@ public interface AddNoteContract {
         void showEmptyNoteError();
 
         void showFailedToSaveError();
+
+        void showText(String text);
     }
 
     interface Presenter {
         void saveNote(String text);
+
+        void populateNote();
     }
 
 }
